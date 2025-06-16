@@ -1,10 +1,9 @@
 import styled from "styled-components"
 import { useState } from "react"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus } from '@fortawesome/free-solid-svg-icons'
-import Button from "./Button"
-import SearchInput from "./SearchInput"
+import { faFilter } from '@fortawesome/free-solid-svg-icons'
 import WishlistItem from "./WishlistItem"
+import ActionsHeader from "./ActionsHeader"
 
 const MyWishlistContainer = styled.section`
     max-width: 1200px;
@@ -22,24 +21,26 @@ const List = styled.div`
     margin-top: 16px;
 `
 
-const MyWishlist = () => {
+const MyWishlist = ({onChangeSearch, search}) => {
+    
+    const [selectedFilter, setSelectedFilter] = useState('Falta Adquirir')
 
-    const [search, setSearch] = useState('')
-
+    const iconFilter = <FontAwesomeIcon icon={faFilter} />
+    const filterOptions = [
+        { name: 'Todos', variant: 'filter' },
+        { name: 'Adquiridos', variant: 'filter' },
+        { name: 'Falta Adquirir', variant: 'filter' }
+    ]
+    const optionsFiltered = filterOptions.filter(item => item.name !== selectedFilter)
     return (
         <MyWishlistContainer>
-            <ListHeader>
-                <h2>Minha Lista de Desejos</h2>
-                <Button
-                    onClick={() => console.log('adicionando...')}
-                    variant={'primaryBookOption'}>
-                    <FontAwesomeIcon icon={faPlus} />
-                </Button>
-            </ListHeader>
-            <SearchInput
-                type={'search'}
-                placeholder={'Buscar livro...'}
-                onChange={valor => setSearch(valor)}
+            <ActionsHeader
+                title={'Minha Lista de Desejos'}
+                onClickAddButton={() => setShowModal(true)}
+                onChangeSearch={onChangeSearch}
+                mainButton={{ icon: iconFilter, name: selectedFilter, variant: 'filter' }}
+                options={optionsFiltered}
+                onSelectFilter={(option) => setSelectedFilter(option.name)}
             />
             <List>
                 <WishlistItem />
