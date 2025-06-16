@@ -1,6 +1,6 @@
 import styled from "styled-components"
 import MyBookshelf from './MyBookshelf'
-import MyWishlist from "./MyWishlist.JSX"
+import MyWishlist from './MyWishlist'
 
 const MainContainer = styled.main`
     width: 100%;
