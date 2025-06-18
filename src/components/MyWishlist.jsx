@@ -4,6 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFilter } from '@fortawesome/free-solid-svg-icons'
 import WishlistItem from "./WishlistItem"
 import ActionsHeader from "./ActionsHeader"
+import Modal from "./Modal"
+import WishlistForm from "./WishlistForm"
 
 const MyWishlistContainer = styled.section`
     max-width: 1200px;
@@ -23,15 +25,36 @@ const List = styled.div`
 
 const MyWishlist = ({onChangeSearch, search}) => {
     
-    const [selectedFilter, setSelectedFilter] = useState('Falta Adquirir')
+    const [selectedFilter, setSelectedFilter] = useState('Comprar')
+    const [showModal, setShowModal] = useState(false)
+    const [wishlist, setWishlist] = useState(JSON.parse(localStorage.getItem('wishlist')) || '')
+    const [editingItem, setEditingItem] = useState(null)
 
     const iconFilter = <FontAwesomeIcon icon={faFilter} />
     const filterOptions = [
         { name: 'Todos', variant: 'filter' },
-        { name: 'Adquiridos', variant: 'filter' },
-        { name: 'Falta Adquirir', variant: 'filter' }
+        { name: 'Comprado', variant: 'filter' },
+        { name: 'Comprar', variant: 'filter' }
     ]
     const optionsFiltered = filterOptions.filter(item => item.name !== selectedFilter)
+
+    const handleDelete = (id) => {
+        const updateWishlist = wishlist.filter(item => item.id !== id)
+        setWishlist(updateWishlist)
+        localStorage.setItem('wishlist', JSON.stringify(updateWishlist))
+    }
+
+    const onCancel = (event) => {
+            event.preventDefault();
+            setShowModal(false)
+    }
+
+    const handleAddItem = (newItem) => {
+        const updateWishlist = [...wishlist, newItem]
+        setWishlist(updateWishlist)
+        localStorage.setItem('wishlist', JSON.stringify(updateWishlist))
+    }
+    
     return (
         <MyWishlistContainer>
             <ActionsHeader
@@ -43,8 +66,41 @@ const MyWishlist = ({onChangeSearch, search}) => {
                 onSelectFilter={(option) => setSelectedFilter(option.name)}
             />
             <List>
-                <WishlistItem />
+                {wishlist &&
+                    wishlist.map(item =>
+                        <WishlistItem
+                            key={item.id}
+                            item={item}
+                            onEdit={() => {
+                                setEditingItem(item)
+                                setShowModal(true)
+                            }}
+                            onDelete={() => handleDelete(item.id)}
+                        />
+                    )
+                }
             </List>
+            {showModal && (
+                <Modal
+                    onClose={() => {
+                        setShowModal(false)
+                        setEditingItem(null)
+                    }}
+                    title={'Adicionar Novo Item'}
+                >
+                    <WishlistForm 
+                        optionsSelectStatus={filterOptions.filter(item => item.name !== 'Todos')}
+                        onCancel={onCancel}
+                        onAddItem={handleAddItem}
+                        onUpdateItem={(updatedWishlist) => {
+                            setWishlist(updatedWishlist)
+                            setShowModal(false)
+                            setEditingItem(null)
+                        }}
+                        editingItem={editingItem}
+                    />
+                </Modal>
+            )}
         </MyWishlistContainer>
     )
 }

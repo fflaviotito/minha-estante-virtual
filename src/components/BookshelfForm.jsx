@@ -118,6 +118,7 @@ const BookshelfForm = ({ optionsSelectStatus, onAddBook, editingBook, onUpdateBo
             localStorage.setItem('bookshelf', JSON.stringify(updatedBooks))
             if (onAddBook) onAddBook(newBook)
         }
+
         setFormData(initialFormData)
         setFormErrors({})
     };

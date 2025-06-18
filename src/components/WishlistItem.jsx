@@ -18,19 +18,19 @@ const ButtonContainer = styled.div`
     gap: 8px;
 `
 
-const WishlistItem = () => {
+const WishlistItem = ({ item, onDelete, onEdit }) => {
     return (
         <WishlistItemContainer>
-            <h3>Os Intrumentos Morais: Cidade de Vidro</h3>
-            <p>R$100,00</p>
+            <h3>{item.titulo}</h3>
+            <p>{item.preco}</p>
             <ButtonContainer>
                 <Button
-                    onClick={() => console.log('editando...')}
+                    onClick={onEdit}
                     variant={'primaryBookOption'}>
                     <FontAwesomeIcon icon={faPen} />
                 </Button>
                 <Button
-                    onClick={() => console.log('excluindo...')}
+                    onClick={onDelete}
                     variant={'primaryBookOption'}>
                     <FontAwesomeIcon icon={faTrash} />
                 </Button>

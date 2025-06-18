@@ -21,7 +21,12 @@ const Main = ({view}) => {
                     search={search}
                 />
             }
-            {view === 'wishlist' && <MyWishlist />}
+            {view === 'wishlist' &&
+                <MyWishlist
+                    onChangeSearch={valor => setSearch(valor)}
+                    search={search}
+                />
+            }
         </MainContainer>
     )
 }
