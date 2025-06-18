@@ -67,17 +67,26 @@ const MyWishlist = ({onChangeSearch, search}) => {
             />
             <List>
                 {wishlist &&
-                    wishlist.map(item =>
-                        <WishlistItem
-                            key={item.id}
-                            item={item}
-                            onEdit={() => {
-                                setEditingItem(item)
-                                setShowModal(true)
-                            }}
-                            onDelete={() => handleDelete(item.id)}
-                        />
-                    )
+                    wishlist
+                        .filter(item => selectedFilter === 'Todos'
+                            ? true
+                            : item.status === selectedFilter
+                        )
+                        .filter(item => !search
+                            ? true
+                            : item.titulo.toLowerCase().includes(search.toLowerCase())
+                        )
+                        .map(item =>
+                            <WishlistItem
+                                key={item.id}
+                                item={item}
+                                onEdit={() => {
+                                    setEditingItem(item)
+                                    setShowModal(true)
+                                }}
+                                onDelete={() => handleDelete(item.id)}
+                            />
+                        )
                 }
             </List>
             {showModal && (
