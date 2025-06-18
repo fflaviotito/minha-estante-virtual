@@ -1,23 +1,13 @@
-import styled from "styled-components"
 import { useState } from "react"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFilter } from '@fortawesome/free-solid-svg-icons'
-import Book from "./Book"
-import Modal from "./Modal"
-import BookshelfForm from "./BookshelfForm"
-import ActionsHeader from "./ActionsHeader"
 
-const MyBookshelfContainer = styled.section`
-    max-width: 1200px;
-    margin: 0 auto;
-`
+import { BookContainer } from "./MyBookshelf"
 
-const BookContainer = styled.div`
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 8px;
-    width: 100%;
-`
+import Book from "../Book"
+import Modal from "../Modal"
+import BookshelfForm from "../BookshelfForm"
+import ActionsHeader from "../ActionsHeader"
 
 const MyBookshelf = ({onChangeSearch, search}) => {
 
@@ -55,7 +45,7 @@ const MyBookshelf = ({onChangeSearch, search}) => {
     }
 
     return (
-        <MyBookshelfContainer>
+        <>
             <ActionsHeader
                 title={'Minha Estante'}
                 onClickAddButton={() => setShowModal(true)}
@@ -111,7 +101,7 @@ const MyBookshelf = ({onChangeSearch, search}) => {
                     />
                 </Modal>
             )}
-        </MyBookshelfContainer>
+        </>
     )
 }
 

@@ -1,44 +1,12 @@
-import styled from "styled-components"
-import Button from "./Button"
+import { HeaderContainer, HeaderContent, HeaderTitle, Nav } from "./Header"
 
-const HeaderContainer = styled.header`
-    background-color: #E1DBD9;
-    width: 100%;
-    padding: 32px 24px;
-    
-    div {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 1rem;
-        max-width: 1200px;
-        margin: 0 auto;
-    }
-
-    h1 {
-        text-align: center;
-    }
-
-    @media (max-width:760px) {
-        div {
-            justify-content: center;
-        }
-    }
-`
-
-const Nav = styled.nav`
-    display: flex;
-    justify-content: center;
-    gap: 12px 1rem;
-    flex-wrap: wrap;
-`
+import Button from "../Button"
 
 const Header = ({setView, activeView}) => {
     return (
         <HeaderContainer>
-            <div>
-                <h1>Minha Estante Virtual</h1>
+            <HeaderContent>
+                <HeaderTitle>Minha Estante Virtual</HeaderTitle>
                 <Nav>
                     <Button
                         onClick={() => setView('bookcase')}
@@ -53,7 +21,7 @@ const Header = ({setView, activeView}) => {
                         Lista de Desejos
                     </Button>
                 </Nav>
-            </div>
+            </HeaderContent>
         </HeaderContainer>
     )
 }

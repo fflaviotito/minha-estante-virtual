@@ -1,33 +1,27 @@
 import { useState } from "react"
-import styled, { createGlobalStyle } from "styled-components"
-import Header from "./components/Header.jsx"
-import Main from "./components/Main.jsx"
-import Footer from "./components/Footer.jsx"
+import { ThemeProvider } from "styled-components"
 
-const GlobalStyle = createGlobalStyle`
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-`
-const PageContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-`
+import { theme } from "./styles/theme"
+import { GlobalStyle } from "./styles/globalStyle"
+import { PageContainer } from "./styles/app"
+
+import Header from "./components/Header"
+import Main from "./components/Main"
+import Footer from "./components/Footer.jsx"
 
 function App() {
 
-  const [view, setView] = useState ('wishlist')
+  const [view, setView] = useState ('bookcase')
 
   return (
-    <PageContainer>
-      <GlobalStyle/>
-      <Header setView={setView} activeView={view}/>
-      <Main view={view}/>
-      <Footer />
-    </PageContainer>
+    <ThemeProvider theme={theme}>
+      <PageContainer>
+        <GlobalStyle />
+        <Header setView={setView} activeView={view} />
+        <Main view={view} />
+        <Footer />
+      </PageContainer>
+    </ThemeProvider >
   )
 }
 
