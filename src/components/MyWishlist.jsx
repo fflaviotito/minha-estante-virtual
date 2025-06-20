@@ -23,20 +23,16 @@ const List = styled.div`
     margin-top: 16px;
 `
 
-const MyWishlist = ({onChangeSearch, search}) => {
+const MyWishlist = ({ selectedFilter, search, showModal, setShowModal }) => {
     
-    const [selectedFilter, setSelectedFilter] = useState('Comprar')
-    const [showModal, setShowModal] = useState(false)
     const [wishlist, setWishlist] = useState(JSON.parse(localStorage.getItem('wishlist')) || '')
     const [editingItem, setEditingItem] = useState(null)
 
-    const iconFilter = <FontAwesomeIcon icon={faFilter} />
     const filterOptions = [
         { name: 'Todos', variant: 'filter' },
         { name: 'Comprado', variant: 'filter' },
         { name: 'Comprar', variant: 'filter' }
     ]
-    const optionsFiltered = filterOptions.filter(item => item.name !== selectedFilter)
 
     const handleDelete = (id) => {
         const updateWishlist = wishlist.filter(item => item.id !== id)
@@ -56,15 +52,7 @@ const MyWishlist = ({onChangeSearch, search}) => {
     }
     
     return (
-        <MyWishlistContainer>
-            <ActionsHeader
-                title={'Minha Lista de Desejos'}
-                onClickAddButton={() => setShowModal(true)}
-                onChangeSearch={onChangeSearch}
-                mainButton={{ icon: iconFilter, name: selectedFilter, variant: 'filter' }}
-                options={optionsFiltered}
-                onSelectFilter={(option) => setSelectedFilter(option.name)}
-            />
+        <>
             <List>
                 {wishlist &&
                     wishlist
@@ -110,7 +98,7 @@ const MyWishlist = ({onChangeSearch, search}) => {
                     />
                 </Modal>
             )}
-        </MyWishlistContainer>
+        </>
     )
 }
 

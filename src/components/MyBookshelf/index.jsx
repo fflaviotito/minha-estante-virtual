@@ -7,16 +7,12 @@ import { BookContainer } from "./MyBookshelf"
 import Book from "../Book"
 import Modal from "../Modal"
 import BookshelfForm from "../BookshelfForm"
-import ActionsHeader from "../ActionsHeader"
 
-const MyBookshelf = ({onChangeSearch, search}) => {
+const MyBookshelf = ({ selectedFilter, search, showModal, setShowModal }) => {
 
-    const [selectedFilter, setSelectedFilter] = useState('Todos')
-    const [showModal, setShowModal] = useState(false)
     const [books, setBooks] = useState(JSON.parse(localStorage.getItem('bookshelf')) || '')
     const [editingBook, setEditingBook] = useState(null)
 
-    const iconFilter = <FontAwesomeIcon icon={faFilter} />
     const filterOptions = [
         { name: 'Todos', variant: 'filter' },
         { name: 'Lido', variant: 'filter' },
@@ -24,7 +20,6 @@ const MyBookshelf = ({onChangeSearch, search}) => {
         { name: 'Quero ler', variant: 'filter' },
         { name: 'Desistir', variant: 'filter' }
     ]
-    const optionsFiltered = filterOptions.filter(item => item.name !== selectedFilter)
 
     const handleAddBook = (newBook) => {
         const updateBooks = [...books, newBook]
@@ -46,14 +41,6 @@ const MyBookshelf = ({onChangeSearch, search}) => {
 
     return (
         <>
-            <ActionsHeader
-                title={'Minha Estante'}
-                onClickAddButton={() => setShowModal(true)}
-                onChangeSearch={onChangeSearch}
-                mainButton={{ icon: iconFilter, name: selectedFilter, variant: 'filter' }}
-                options={optionsFiltered}
-                onSelectFilter={(option) => setSelectedFilter(option.name)}
-            />
             <BookContainer>
                 {books &&
                     books

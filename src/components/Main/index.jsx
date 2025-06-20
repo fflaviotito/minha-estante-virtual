@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFilter } from '@fortawesome/free-solid-svg-icons'
 
@@ -10,46 +10,54 @@ import MyWishlist from '../MyWishlist'
 
 const Main = ({ view }) => {
 
-    const [search, setSearch] = useState('')
-    const [selectedFilter, setSelectedFilter] = useState('Todos')
+    useEffect(() => { setSelectedFilter(view === 'bookcase' ? 'Todos' : 'Comprar') }, [view])
 
-    const sectionTitle = (view === 'bookcase') ? 'Minha Estante' : 'Minha Lista de Desjos'
+    const [selectedFilter, setSelectedFilter] = useState('Todos')
+    const [search, setSearch] = useState('')
+    const [showModal, setShowModal] = useState(false)
+
+    const sectionTitle = (view === 'bookcase') ? 'Minha Estante' : 'Minha Lista de Desejos'
 
     const iconFilter = <FontAwesomeIcon icon={faFilter} />
-    const filterOptions = [
-        { name: 'Todos', variant: 'filter', view: 'all' },
-        { name: 'Lido', variant: 'filter', view: 'bookcase' },
-        { name: 'Lendo', variant: 'filter', view: 'bookcase' },
-        { name: 'Quero ler', variant: 'filter', view: 'bookcase' },
-        { name: 'Desistir', variant: 'filter', view: 'bookcase' },
-        { name: 'Comprado', variant: 'filter', view: 'wishlist' },
-        { name: 'Comprar', variant: 'filter', view: 'wishlist' }
+    const filters = [
+        { name: 'Todos', view: 'all' },
+        { name: 'Lido', view: 'bookcase' },
+        { name: 'Lendo', view: 'bookcase' },
+        { name: 'Quero ler', view: 'bookcase' },
+        { name: 'Desistir', view: 'bookcase' },
+        { name: 'Comprado', view: 'wishlist' },
+        { name: 'Comprar', view: 'wishlist' }
     ]
-    const optionsFiltered = filterOptions.filter(item =>
-        (item.view === view || item.view === 'all') && item.name !== selectedFilter
+    const optionsFiltered = filters.filter(filter =>
+        (filter.view === view || filter.view === 'all') && filter.name !== selectedFilter
     )
 
     return (
         <MainContainer>
-            <ActionsHeader
-                title={sectionTitle}
-                onClickAddButton={() => setShowModal(true)}
-                onChangeSearch={valor => setSearch(valor)}
-                mainButton={{ icon: iconFilter, name: selectedFilter, variant: 'filter' }}
-                options={optionsFiltered}
-                onSelectFilter={(option) => setSelectedFilter(option.name)}
-            />
             <MainContent>
+                <ActionsHeader
+                    title={sectionTitle}
+                    onClickAddButton={() => setShowModal(true)}
+                    onChangeSearch={valor => setSearch(valor)}
+                    mainButton={{ icon: iconFilter, name: selectedFilter, variant: 'filter' }}
+                    options={optionsFiltered}
+                    variantButton={'filter'}
+                    onSelectFilter={(option) => setSelectedFilter(option.name)}
+                />
                 {view === 'bookcase' &&
                     <MyBookshelf
-                        onChangeSearch={valor => setSearch(valor)}
+                        selectedFilter={selectedFilter}
                         search={search}
+                        showModal={showModal}
+                        setShowModal={setShowModal}
                     />
                 }
                 {view === 'wishlist' &&
                     <MyWishlist
-                        onChangeSearch={valor => setSearch(valor)}
+                        selectedFilter={selectedFilter}
                         search={search}
+                        showModal={showModal}
+                        setShowModal={setShowModal}
                     />
                 }
             </MainContent>

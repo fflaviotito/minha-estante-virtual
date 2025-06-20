@@ -1,31 +1,14 @@
-import styled from "styled-components"
-import Button from "./Button"
+import { useState } from "react"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
-import SearchInput from "./SearchInput"
-import OptionsMenu from "./OptionsMenu"
-import { useState } from "react"
 
-const ActionsHeaderContainer = styled.div`
-    width: 100%;
-`
+import { ActionsHeaderContainer, Header, Title, FilterToolbar } from "./ActionsHeader"
 
-const Header = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-bottom: 16px;
-`
+import Button from "../Button"
+import SearchInput from "../SearchInput"
+import OptionsMenu from "../OptionsMenu"
 
-const FilterToolbar = styled.div`
-    display: flex;
-    gap: 16px;
-    align-items: center;
-    flex-wrap: wrap;
-    margin-bottom: 16px;
-`
-
-const ActionsHeader = ({title, onClickAddButton, onChangeSearch, mainButton, options, onSelectFilter}) => {
+const ActionsHeader = ({ title, onClickAddButton, onChangeSearch, mainButton, options, variantButton, onSelectFilter }) => {
 
     const [showMenu, setShowMenu] = useState(false)
 
@@ -37,7 +20,7 @@ const ActionsHeader = ({title, onClickAddButton, onChangeSearch, mainButton, opt
     return (
         <ActionsHeaderContainer>
             <Header>
-                <h2>{title}</h2>
+                <Title>{title}</Title>
                 <Button
                     onClick={onClickAddButton}
                     variant={'primaryBookOption'}>
@@ -53,6 +36,7 @@ const ActionsHeader = ({title, onClickAddButton, onChangeSearch, mainButton, opt
                 <OptionsMenu
                     mainButton={mainButton}
                     options={options}
+                    variantButton={variantButton}
                     showMenu={showMenu}
                     toggleMenu={() => setShowMenu(!showMenu)}
                     onSelect={onSelectOptionsMenu}

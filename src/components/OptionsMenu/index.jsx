@@ -1,19 +1,8 @@
-import styled from "styled-components"
-import Button from "./Button"
+import { StyledOptionsMenu, Options } from "./OptionsMenu"
 
-const StyledOptionsMenu = styled.div`
-    position: relative;
-`
+import Button from "../Button"
 
-const Options = styled.div`
-    position: absolute;
-    top: 100%;
-    right: 0;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    z-index: 1;
-`
-
-const OptionsMenu = ({mainButton, options, showMenu, toggleMenu, onSelect}) => {    
+const OptionsMenu = ({mainButton, options, showMenu, toggleMenu, onSelect, variantButton}) => {    
     return (
         <StyledOptionsMenu>
             <Button
@@ -26,7 +15,7 @@ const OptionsMenu = ({mainButton, options, showMenu, toggleMenu, onSelect}) => {
                     {options.map(item => <Button
                         key={item.name}
                         onClick={() => onSelect(item)}
-                        variant={item.variant}>
+                        variant={variantButton ? variantButton : item.variant}>
                         {item.icon}
                         {item.name}
                     </Button>)}
