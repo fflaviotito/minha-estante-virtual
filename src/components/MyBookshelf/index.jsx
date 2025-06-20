@@ -1,6 +1,4 @@
-import { useState } from "react"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFilter } from '@fortawesome/free-solid-svg-icons'
+import useStorageList from "../../hooks/useStorageList"
 
 import { BookContainer } from "./MyBookshelf"
 
@@ -8,42 +6,21 @@ import Book from "../Book"
 import Modal from "../Modal"
 import BookshelfForm from "../BookshelfForm"
 
-const MyBookshelf = ({ selectedFilter, search, showModal, setShowModal }) => {
+const MyBookshelf = ({ view, selectedFilter, search, showModal, setShowModal, formOptions }) => {
 
-    const [books, setBooks] = useState(JSON.parse(localStorage.getItem('bookshelf')) || '')
-    const [editingBook, setEditingBook] = useState(null)
-
-    const filterOptions = [
-        { name: 'Todos', variant: 'filter' },
-        { name: 'Lido', variant: 'filter' },
-        { name: 'Lendo', variant: 'filter' },
-        { name: 'Quero ler', variant: 'filter' },
-        { name: 'Desistir', variant: 'filter' }
-    ]
-
-    const handleAddBook = (newBook) => {
-        const updateBooks = [...books, newBook]
-        setBooks(updateBooks)
-        localStorage.setItem('bookshelf', JSON.stringify(updateBooks))
-    }
-
-    const handleDelete = (id) => {
-        const updateBooks = books.filter(book => book.id !== id)
-        setBooks(updateBooks)
-        localStorage.setItem('bookshelf', JSON.stringify(updateBooks))
-    }
+    const { list, addItem, updateItem, deleteItem, editingItem, setEditingItem, clearEditing } = useStorageList(view)
 
     const onCancel = (event) => {
         event.preventDefault();
         setShowModal(false)
-        setEditingBook(null)
+        clearEditing()
     }
 
     return (
         <>
             <BookContainer>
-                {books &&
-                    books
+                {list &&
+                    list
                         .filter(item => selectedFilter === 'Todos'
                             ? true
                             : item.status === selectedFilter
@@ -58,9 +35,9 @@ const MyBookshelf = ({ selectedFilter, search, showModal, setShowModal }) => {
                             <Book
                                 key={book.id}
                                 book={book}
-                                onDelete={() => handleDelete(book.id)}
+                                onDelete={() => deleteItem(book.id)}
                                 onEdit={() => {
-                                    setEditingBook(book)
+                                    setEditingItem(book)
                                     setShowModal(true)
                                 }}
                             />
@@ -71,19 +48,19 @@ const MyBookshelf = ({ selectedFilter, search, showModal, setShowModal }) => {
                 <Modal
                     onClose={() => {
                         setShowModal(false)
-                        setEditingBook(null)
+                        setEditingItem(null)
                     }}
                     title={'Adicionar Novo Livro'}
                 >
                     <BookshelfForm
-                        optionsSelectStatus={filterOptions.filter(item => item.name !== 'Todos')}
-                        onAddBook={handleAddBook}
-                        onUpdateBook={(updatedBooks) => {
-                            setBooks(updatedBooks)
+                        optionsSelectStatus={formOptions}
+                        onAddBook={addItem}
+                        onUpdateBook={(update) => {
+                            updateItem(update)
                             setShowModal(false)
-                            setEditingBook(null)
+                            setEditingItem(null)
                         }}
-                        editingBook={editingBook}
+                        editingBook={editingItem}
                         onCancel={onCancel}
                     />
                 </Modal>

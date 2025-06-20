@@ -31,6 +31,7 @@ const Main = ({ view }) => {
     const optionsFiltered = filters.filter(filter =>
         (filter.view === view || filter.view === 'all') && filter.name !== selectedFilter
     )
+    const formOptions = filters.filter(filter => filter.view === view && filter.name !== 'Todos')
 
     return (
         <MainContainer>
@@ -46,18 +47,22 @@ const Main = ({ view }) => {
                 />
                 {view === 'bookcase' &&
                     <MyBookshelf
+                        view={view}
                         selectedFilter={selectedFilter}
                         search={search}
                         showModal={showModal}
                         setShowModal={setShowModal}
+                        formOptions={formOptions}
                     />
                 }
                 {view === 'wishlist' &&
                     <MyWishlist
+                        view={view}
                         selectedFilter={selectedFilter}
                         search={search}
                         showModal={showModal}
                         setShowModal={setShowModal}
+                        formOptions={formOptions}
                     />
                 }
             </MainContent>

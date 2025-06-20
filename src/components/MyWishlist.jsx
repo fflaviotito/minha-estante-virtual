@@ -23,16 +23,10 @@ const List = styled.div`
     margin-top: 16px;
 `
 
-const MyWishlist = ({ selectedFilter, search, showModal, setShowModal }) => {
+const MyWishlist = ({ selectedFilter, search, showModal, setShowModal, formOptions }) => {
     
     const [wishlist, setWishlist] = useState(JSON.parse(localStorage.getItem('wishlist')) || '')
     const [editingItem, setEditingItem] = useState(null)
-
-    const filterOptions = [
-        { name: 'Todos', variant: 'filter' },
-        { name: 'Comprado', variant: 'filter' },
-        { name: 'Comprar', variant: 'filter' }
-    ]
 
     const handleDelete = (id) => {
         const updateWishlist = wishlist.filter(item => item.id !== id)
@@ -86,7 +80,7 @@ const MyWishlist = ({ selectedFilter, search, showModal, setShowModal }) => {
                     title={'Adicionar Novo Item'}
                 >
                     <WishlistForm 
-                        optionsSelectStatus={filterOptions.filter(item => item.name !== 'Todos')}
+                        optionsSelectStatus={formOptions}
                         onCancel={onCancel}
                         onAddItem={handleAddItem}
                         onUpdateItem={(updatedWishlist) => {
