@@ -64,7 +64,7 @@ const calcPercent = (paginaAtual, paginas) => {
     return paginaAtual === '' && paginas === '' ? 0 : parseInt(paginaAtual * 100 / paginas)
 }
 
-const Book = ({ book, onDelete, onEdit }) => {
+const Book = ({ item, onDelete, onEdit }) => {
 
     const [showMenu, setShowMenu] = useState(false)
 
@@ -96,8 +96,8 @@ const Book = ({ book, onDelete, onEdit }) => {
         <BookContianer>
             <LeftContainer>
                 <BookImage
-                    src={book.capa === '' ? '#' : book.capa}
-                    alt={`Capa do livro: ${book.titulo}`}
+                    src={item.capa === '' ? '#' : item.capa}
+                    alt={`Capa do livro: ${item.titulo}`}
                 />
                 <Checkbox
                     type="checkbox"
@@ -114,15 +114,15 @@ const Book = ({ book, onDelete, onEdit }) => {
             </LeftContainer>
             <RightContainer>
                 <BookInfoTitles>
-                    <h3>{book.titulo}</h3>
-                    <p>{book.autor}</p>
+                    <h3>{item.titulo}</h3>
+                    <p>{item.autor}</p>
                 </BookInfoTitles>
                 <BookInfoCategory>
-                    <p>{book.genero}</p>
-                    <p>{book.status}</p>
+                    <p>{item.genero}</p>
+                    <p>{item.status}</p>
                 </BookInfoCategory>
                 <BookInfoProgress>
-                    <ProgressBar percent={calcPercent(book.paginaAtual, book.paginas)}/>
+                    <ProgressBar percent={calcPercent(item.paginaAtual, item.paginas)}/>
                 </BookInfoProgress>
             </RightContainer>
         </BookContianer>

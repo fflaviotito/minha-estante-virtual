@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 
-const useStorageList = (storageKey) => {
+const useStorageList = (storageKey, filter, search) => {
     const [list, setList] = useState([])
     const [editingItem, setEditingItem] = useState(null)
 
@@ -33,8 +33,23 @@ const useStorageList = (storageKey) => {
         setEditingItem(null)
     }
 
+    const filteredList = list
+        .filter(item => filter === 'Todos' || item.status === filter)
+        .filter(item => !search ||
+            item.titulo.toLowerCase().includes(search.toLowerCase()) ||
+            item.autor.toLowerCase().includes(search.toLowerCase()) ||
+            item.genero.toLowerCase().includes(search.toLowerCase())
+        )
+
     return {
-        list, addItem, updateItem, deleteItem, editingItem, setEditingItem, clearEditing
+        list,
+        addItem,
+        updateItem,
+        deleteItem,
+        editingItem,
+        setEditingItem,
+        clearEditing,
+        filteredList
     }
 }
 

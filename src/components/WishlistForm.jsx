@@ -26,7 +26,7 @@ const initialFormData = {}
 inputsForm.map(item => initialFormData[item.name] = '')
 initialFormData.status = ''
 
-const WishlistForm = ({ optionsSelectStatus, onCancel, onAddItem, onUpdateItem, editingItem }) => {
+const WishlistForm = ({ optionsSelectStatus, onCancel, onAdd, onUpdate, editingItem }) => {
 
     const [formData, setFormData] = useState(initialFormData);
     const [formErrors, setFormErrors] = useState({})
@@ -65,12 +65,12 @@ const WishlistForm = ({ optionsSelectStatus, onCancel, onAddItem, onUpdateItem, 
                 item.id === editingItem.id ? { ...formData } : item
             )
             localStorage.setItem('wishlist', JSON.stringify(updatedWishlist))
-            if (onUpdateItem) onUpdateItem(updatedWishlist)
+            if (onUpdate) onUpdate(updatedWishlist)
         } else {
             const newItem = { id: Date.now(), ...formData }
             const updatedWishlist = [...storedWishlist, newItem]
             localStorage.setItem('wishlist', JSON.stringify(updatedWishlist))
-            if (onAddItem) onAddItem(newItem)
+            if (onAdd) onAdd(newItem)
         }   
 
         setFormData(initialFormData)

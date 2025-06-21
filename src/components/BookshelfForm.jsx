@@ -64,14 +64,14 @@ inputProgress.map(item => initialFormData[item.name] = '')
 inputTime.map(item => initialFormData[item.name] = '')
 initialFormData.status = ''
 
-const BookshelfForm = ({ optionsSelectStatus, onAddBook, editingBook, onUpdateBook, onCancel }) => {
+const BookshelfForm = ({ optionsSelectStatus, onAdd, editingItem, onUpdate, onCancel }) => {
 
     const [formData, setFormData] = useState(initialFormData);
     const [formErrors, setFormErrors] = useState({})
 
     useEffect(() => {
-        if (editingBook) setFormData(editingBook)
-    }, [editingBook])
+        if (editingItem) setFormData(editingItem)
+    }, [editingItem])
 
     const handleInputChange = (event) => {
         const {id, value} = event.target
@@ -104,19 +104,12 @@ const BookshelfForm = ({ optionsSelectStatus, onAddBook, editingBook, onUpdateBo
         
         if (Object.keys(errors).length > 0) return setFormErrors(errors)
         
-        const storedBooks = JSON.parse(localStorage.getItem('bookshelf')) || []
-        
-        if (editingBook) {
-            const updatedBooks = storedBooks.map(book =>
-                book.id === editingBook.id ? { ...formData } : book
-            )
-            localStorage.setItem('bookshelf', JSON.stringify(updatedBooks))
-            if (onUpdateBook) onUpdateBook(updatedBooks)
+        if (editingItem) {
+            const updateBook = { ...formData, id: editingItem.id}
+            onUpdate(updateBook)
         } else {
             const newBook = { id: Date.now(), ...formData }
-            const updatedBooks = [...storedBooks, newBook]
-            localStorage.setItem('bookshelf', JSON.stringify(updatedBooks))
-            if (onAddBook) onAddBook(newBook)
+            onAdd(newBook)
         }
 
         setFormData(initialFormData)

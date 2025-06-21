@@ -45,26 +45,14 @@ const Main = ({ view }) => {
                     variantButton={'filter'}
                     onSelectFilter={(option) => setSelectedFilter(option.name)}
                 />
-                {view === 'bookcase' &&
-                    <MyBookshelf
-                        view={view}
-                        selectedFilter={selectedFilter}
-                        search={search}
-                        showModal={showModal}
-                        setShowModal={setShowModal}
-                        formOptions={formOptions}
-                    />
-                }
-                {view === 'wishlist' &&
-                    <MyWishlist
-                        view={view}
-                        selectedFilter={selectedFilter}
-                        search={search}
-                        showModal={showModal}
-                        setShowModal={setShowModal}
-                        formOptions={formOptions}
-                    />
-                }
+                <MyBookshelf
+                    view={view}
+                    selectedFilter={selectedFilter}
+                    search={search}
+                    showModal={showModal}
+                    setShowModal={setShowModal}
+                    formOptions={formOptions}
+                />
             </MainContent>
         </MainContainer>
     )

@@ -3,12 +3,27 @@ import useStorageList from "../../hooks/useStorageList"
 import { BookContainer } from "./MyBookshelf"
 
 import Book from "../Book"
-import Modal from "../Modal"
+import WishlistItem from "../WishlistItem"
 import BookshelfForm from "../BookshelfForm"
+import WishlistForm from "../WishlistForm"
+import Modal from "../Modal"
 
+//MyBookList
 const MyBookshelf = ({ view, selectedFilter, search, showModal, setShowModal, formOptions }) => {
 
-    const { list, addItem, updateItem, deleteItem, editingItem, setEditingItem, clearEditing } = useStorageList(view)
+    const {
+        addItem,
+        updateItem,
+        deleteItem,
+        editingItem,
+        setEditingItem,
+        clearEditing,
+        filteredList
+    } = useStorageList(view, selectedFilter, search)
+
+    const ItemComponent = (view === 'bookcase') ? Book : WishlistItem
+    const FormComponent = (view === 'bookcase') ? BookshelfForm : WishlistForm
+    const modalTitle = (!editingItem) ? 'Adicionar Novo Livro' : 'Editar Livro'
 
     const onCancel = (event) => {
         event.preventDefault();
@@ -19,29 +34,18 @@ const MyBookshelf = ({ view, selectedFilter, search, showModal, setShowModal, fo
     return (
         <>
             <BookContainer>
-                {list &&
-                    list
-                        .filter(item => selectedFilter === 'Todos'
-                            ? true
-                            : item.status === selectedFilter
-                        )
-                        .filter(item => !search
-                            ? true
-                            : item.titulo.toLowerCase().includes(search.toLowerCase()) ||
-                            item.autor.toLowerCase().includes(search.toLowerCase()) ||
-                            item.genero.toLowerCase().includes(search.toLowerCase())
-                        )
-                        .map(book => 
-                            <Book
-                                key={book.id}
-                                book={book}
-                                onDelete={() => deleteItem(book.id)}
-                                onEdit={() => {
-                                    setEditingItem(book)
-                                    setShowModal(true)
-                                }}
-                            />
-                        )
+                {filteredList &&
+                    filteredList.map(item =>
+                        <ItemComponent
+                            key={item.id}
+                            item={item}
+                            onDelete={() => deleteItem(item.id)}
+                            onEdit={() => {
+                                setEditingItem(item)
+                                setShowModal(true)
+                            }}
+                        />
+                    )
                 }
             </BookContainer>
             {showModal && (
@@ -50,17 +54,17 @@ const MyBookshelf = ({ view, selectedFilter, search, showModal, setShowModal, fo
                         setShowModal(false)
                         setEditingItem(null)
                     }}
-                    title={'Adicionar Novo Livro'}
+                    title={modalTitle}
                 >
-                    <BookshelfForm
+                    <FormComponent
                         optionsSelectStatus={formOptions}
-                        onAddBook={addItem}
-                        onUpdateBook={(update) => {
+                        onAdd={addItem}
+                        onUpdate={(update) => {
                             updateItem(update)
                             setShowModal(false)
                             setEditingItem(null)
                         }}
-                        editingBook={editingItem}
+                        editingItem={editingItem}
                         onCancel={onCancel}
                     />
                 </Modal>
