@@ -8,8 +8,7 @@ import BookshelfForm from "../BookshelfForm"
 import WishlistForm from "../WishlistForm"
 import Modal from "../Modal"
 
-//MyBookList
-const MyBookshelf = ({ view, selectedFilter, search, showModal, setShowModal, formOptions }) => {
+const MyBookList = ({ view, selectedFilter, search, showModal, setShowModal, formOptions }) => {
 
     const {
         addItem,
@@ -21,14 +20,13 @@ const MyBookshelf = ({ view, selectedFilter, search, showModal, setShowModal, fo
         filteredList
     } = useStorageList(view, selectedFilter, search)
 
-    const ItemComponent = (view === 'bookcase') ? Book : WishlistItem
-    const FormComponent = (view === 'bookcase') ? BookshelfForm : WishlistForm
-    const modalTitle = (!editingItem) ? 'Adicionar Novo Livro' : 'Editar Livro'
+    const ItemComponent = view === 'bookcase' ? Book : WishlistItem
+    const FormComponent = view === 'bookcase' ? BookshelfForm : WishlistForm
+    const modalTitle = !editingItem ? 'Adicionar Novo Livro' : 'Editar Livro'
 
-    const onCancel = (event) => {
-        event.preventDefault();
-        setShowModal(false)
-        clearEditing()
+    const openOrCloseModal = (item = null) => {
+        setShowModal(!showModal)
+        item ? setEditingItem(item) : clearEditing()
     }
 
     return (
@@ -40,20 +38,14 @@ const MyBookshelf = ({ view, selectedFilter, search, showModal, setShowModal, fo
                             key={item.id}
                             item={item}
                             onDelete={() => deleteItem(item.id)}
-                            onEdit={() => {
-                                setEditingItem(item)
-                                setShowModal(true)
-                            }}
+                            onEdit={() => openOrCloseModal(item)}
                         />
                     )
                 }
             </BookContainer>
             {showModal && (
                 <Modal
-                    onClose={() => {
-                        setShowModal(false)
-                        setEditingItem(null)
-                    }}
+                    onClose={() => openOrCloseModal()}
                     title={modalTitle}
                 >
                     <FormComponent
@@ -61,11 +53,10 @@ const MyBookshelf = ({ view, selectedFilter, search, showModal, setShowModal, fo
                         onAdd={addItem}
                         onUpdate={(update) => {
                             updateItem(update)
-                            setShowModal(false)
-                            setEditingItem(null)
+                            openOrCloseModal()
                         }}
                         editingItem={editingItem}
-                        onCancel={onCancel}
+                        onCancel={() => openOrCloseModal()}
                     />
                 </Modal>
             )}
@@ -73,4 +64,4 @@ const MyBookshelf = ({ view, selectedFilter, search, showModal, setShowModal, fo
     )
 }
 
-export default MyBookshelf
+export default MyBookList

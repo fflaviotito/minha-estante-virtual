@@ -5,8 +5,7 @@ import { faFilter } from '@fortawesome/free-solid-svg-icons'
 import { MainContainer, MainContent } from "./Main"
 
 import ActionsHeader from "../ActionsHeader"
-import MyBookshelf from '../MyBookshelf'
-import MyWishlist from '../MyWishlist'
+import MyBookList from '../MyBookList'
 
 const Main = ({ view }) => {
 
@@ -45,7 +44,7 @@ const Main = ({ view }) => {
                     variantButton={'filter'}
                     onSelectFilter={(option) => setSelectedFilter(option.name)}
                 />
-                <MyBookshelf
+                <MyBookList
                     view={view}
                     selectedFilter={selectedFilter}
                     search={search}

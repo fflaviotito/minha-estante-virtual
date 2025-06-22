@@ -116,6 +116,11 @@ const BookshelfForm = ({ optionsSelectStatus, onAdd, editingItem, onUpdate, onCa
         setFormErrors({})
     };
 
+    const handleCancel = (event) => {
+        event.preventDefault()
+        onCancel()
+    }
+
     return (
         <Form onSubmit={handleSubmit}>
             <InfoContainer>
@@ -170,7 +175,7 @@ const BookshelfForm = ({ optionsSelectStatus, onAdd, editingItem, onUpdate, onCa
             </TimeContainer>
             <ButtonContainer>
                 <Button>Salvar</Button>
-                <Button onClick={onCancel}>Cancelar</Button>
+                <Button onClick={handleCancel}>Cancelar</Button>
             </ButtonContainer>
         </Form>
     )
