@@ -1,4 +1,4 @@
-import { StyledOptionsMenu, Options } from "./OptionsMenu"
+import { StyledOptionsMenu, Options } from "./styles"
 
 import Button from "../Button"
 

@@ -1,6 +1,6 @@
 import useStorageList from "../../hooks/useStorageList"
 
-import { BookContainer } from "./MyBookshelf"
+import { BookcaseContainer, WishlistContainer } from "./styles"
 
 import Book from "../Book"
 import WishlistItem from "../WishlistItem"
@@ -20,6 +20,7 @@ const MyBookList = ({ view, selectedFilter, search, showModal, setShowModal, for
         filteredList
     } = useStorageList(view, selectedFilter, search)
 
+    const StyledComponent = view === 'bookcase' ? BookcaseContainer : WishlistContainer
     const ItemComponent = view === 'bookcase' ? Book : WishlistItem
     const FormComponent = view === 'bookcase' ? BookshelfForm : WishlistForm
     const modalTitle = !editingItem ? 'Adicionar Novo Livro' : 'Editar Livro'
@@ -31,7 +32,7 @@ const MyBookList = ({ view, selectedFilter, search, showModal, setShowModal, for
 
     return (
         <>
-            <BookContainer>
+            <StyledComponent>
                 {filteredList &&
                     filteredList.map(item =>
                         <ItemComponent
@@ -42,7 +43,7 @@ const MyBookList = ({ view, selectedFilter, search, showModal, setShowModal, for
                         />
                     )
                 }
-            </BookContainer>
+            </StyledComponent>
             {showModal && (
                 <Modal
                     onClose={() => openOrCloseModal()}
@@ -50,7 +51,10 @@ const MyBookList = ({ view, selectedFilter, search, showModal, setShowModal, for
                 >
                     <FormComponent
                         optionsSelectStatus={formOptions}
-                        onAdd={addItem}
+                        onAdd={(newItem) => {
+                            addItem(newItem)
+                            openOrCloseModal()
+                        }}
                         onUpdate={(update) => {
                             updateItem(update)
                             openOrCloseModal()

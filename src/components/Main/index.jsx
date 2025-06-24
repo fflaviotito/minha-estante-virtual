@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFilter } from '@fortawesome/free-solid-svg-icons'
 
-import { MainContainer, MainContent } from "./Main"
+import { MainContainer, MainContent } from "./styles"
 
 import ActionsHeader from "../ActionsHeader"
 import MyBookList from '../MyBookList'

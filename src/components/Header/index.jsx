@@ -1,4 +1,4 @@
-import { HeaderContainer, HeaderContent, HeaderTitle, Nav } from "./Header"
+import { HeaderContainer, HeaderContent, HeaderTitle, Nav } from "./styles"
 
 import Button from "../Button"
 

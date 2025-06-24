@@ -2,7 +2,7 @@ import { useState } from "react"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 
-import { ActionsHeaderContainer, Header, Title, FilterToolbar } from "./ActionsHeader"
+import { ActionsHeaderContainer, Header, Title, FilterToolbar } from "./styles"
 
 import Button from "../Button"
 import SearchInput from "../SearchInput"
