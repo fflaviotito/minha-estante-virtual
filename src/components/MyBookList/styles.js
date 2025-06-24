@@ -22,7 +22,11 @@ export const BookcaseContainer = styled.div`
 `
 
 export const WishlistContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+
+    @media (max-width: 600px) {
+        grid-template-columns: 1fr;
+    }
 `

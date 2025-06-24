@@ -47,7 +47,8 @@ const validateBookshelfForm = ({ titulo, autor, genero, capa, status, paginas, p
     if (paginaAtual) {
         if (isNaN(paginaAtual) || paginaAtual < 0) {
             errors.paginaAtual = 'Informe uma página atual válida.'
-        } else if (paginaAtual > paginas) {
+        } else if (Number(paginaAtual) > Number(paginas)) {
+            {console.log(paginas, paginaAtual)}
             errors.paginaAtual = 'A página atual não pode ser maior que o total de páginas.'
         }
     }
