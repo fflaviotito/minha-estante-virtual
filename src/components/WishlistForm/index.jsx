@@ -1,30 +1,22 @@
-import styled from "styled-components"
-import FormInput from "./FormInput"
 import { useEffect, useState } from "react"
-import FormSelect from "./FormSelect"
-import Button from "./Button"
-import validateWishlistForm from "../utils/validateWishlistForm"
+import formatInputValue from "../../utils/formatInputValue" 
+import validateWishlistForm from "../../utils/validateWishlistForm"
 
-const Form = styled.form`
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-`
+import { Form, ButtonContainer } from "./styles"
 
-const ButtonContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-`   
+import FormInput from "../FormInput"
+import FormSelect from "../FormSelect"
+import Button from "../Button"
 
 const inputsForm = [
     {name: 'titulo', label: 'Título', typeInput: 'text', placeholder: 'Informe o título do livro...', required: true},
     {name: 'preco', label: 'Preço', typeInput: 'text', placeholder: 'R$79,99', required: true}
 ]
 
-const initialFormData = {}
-inputsForm.map(item => initialFormData[item.name] = '')
-initialFormData.status = ''
+const initialFormData = inputsForm.reduce((acc, item) => {
+    acc[item.name] = ''
+    return acc
+}, { status: '' })
 
 const WishlistForm = ({ optionsSelectStatus, onCancel, onAdd, onUpdate, editingItem }) => {
 
@@ -32,23 +24,12 @@ const WishlistForm = ({ optionsSelectStatus, onCancel, onAdd, onUpdate, editingI
     const [formErrors, setFormErrors] = useState({})
 
     useEffect(() => {
-        if (editingItem) setFormData(editingItem)
+        if (editingItem) setFormData({ ...initialFormData, ...editingItem })
     }, [editingItem])
 
     const handleInputChange = (event) => {
         const {id, value} = event.target
-        let formattedValue = value
-
-        if (id === 'preco') {
-            const numericValue = value.replace(/\D/g, '')
-
-            const centavos = numericValue.padStart(3, '0');
-            const reais = centavos.slice(0, -2);
-            const centavosFinal = centavos.slice(-2);
-
-            formattedValue = `R$ ${parseInt(reais)}${centavosFinal ? ',' + centavosFinal : ',00'}`;
-        }
-
+        const formattedValue = formatInputValue(id, value)
         setFormData((prev) => ({...prev, [id]: formattedValue}))
     };
 
@@ -58,19 +39,13 @@ const WishlistForm = ({ optionsSelectStatus, onCancel, onAdd, onUpdate, editingI
                 
         if (Object.keys(errors).length > 0) return setFormErrors(errors)
 
-        const storedWishlist = JSON.parse(localStorage.getItem('wishlist')) || []
-
         if (editingItem) {
-            const updatedWishlist = storedWishlist.map(item =>
-                item.id === editingItem.id ? { ...formData } : item
-            )
+            const updatedWishlist = { ...formData, id: editingItem.id}
             localStorage.setItem('wishlist', JSON.stringify(updatedWishlist))
-            if (onUpdate) onUpdate(updatedWishlist)
+            onUpdate(updatedWishlist)
         } else {
             const newItem = { id: Date.now(), ...formData }
-            const updatedWishlist = [...storedWishlist, newItem]
-            localStorage.setItem('wishlist', JSON.stringify(updatedWishlist))
-            if (onAdd) onAdd(newItem)
+            onAdd(newItem)
         }   
 
         setFormData(initialFormData)

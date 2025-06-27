@@ -1,45 +1,12 @@
-import styled from "styled-components"
 import { useEffect, useState } from "react"
-import FormInput from "./FormInput"
-import Button from "./Button"
-import FormSelect from "./FormSelect"
-import validateBookshelfForm from "../utils/validateBookshelfForm"
+import formatInputValue from "../../utils/formatInputValue"
+import validateBookshelfForm from "../../utils/validateBookcaseForm"
 
-const Form = styled.form`
-    display: flex;
-    flex-direction: column;
-`
+import { Form, InfoContainer, StatusContainer, ProgressContainer, TimeContainer, ButtonContainer } from "./styles"
 
-const InfoContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-bottom: 8px;
-`
-
-const StatusContainer = styled.div`
-    margin-bottom: 8px;
-`
-
-const ProgressContainer = styled.div`
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(115px, 1fr));
-    gap: 8px;
-    margin-bottom: 8px;
-`
-
-const TimeContainer = styled.div`
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(115px, 1fr));
-    gap: 8px;
-    margin-bottom: 8px;
-`
-
-const ButtonContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-`
+import FormInput from "../FormInput"
+import Button from "../Button"
+import FormSelect from "../FormSelect"
 
 const inputInfo = [
     {name: 'titulo', label: 'Título', typeInput: 'text', placeholder: 'Informe o título do livro...', required: true},
@@ -58,11 +25,11 @@ const inputTime = [
     {name: 'dataFim', label: 'Data de término', typeInput: 'text', placeholder: 'Ex: 06/06/2025', required: false}
 ]
 
-const initialFormData = {}
-inputInfo.map(item => initialFormData[item.name] = '')
-inputProgress.map(item => initialFormData[item.name] = '')
-inputTime.map(item => initialFormData[item.name] = '')
-initialFormData.status = ''
+const allInputs = [...inputInfo, ...inputProgress, ...inputTime]
+const initialFormData = allInputs.reduce((acc, item) => {
+    acc[item.name] = ''
+    return acc
+}, { status: '' })
 
 const BookshelfForm = ({ optionsSelectStatus, onAdd, editingItem, onUpdate, onCancel }) => {
 
@@ -70,32 +37,13 @@ const BookshelfForm = ({ optionsSelectStatus, onAdd, editingItem, onUpdate, onCa
     const [formErrors, setFormErrors] = useState({})
 
     useEffect(() => {
-        if (editingItem) setFormData(editingItem)
+        if (editingItem) setFormData({ ...initialFormData, ...editingItem })
     }, [editingItem])
 
     const handleInputChange = (event) => {
-        const {id, value} = event.target
-        let formattedValue = value
-
-        if (id === 'titulo') formattedValue = value.slice(0,130)
-
-        if (id === 'autor') formattedValue = value.slice(0, 80)
-
-        if (id === 'genero') formattedValue = value.slice(0,30)
-
-        if (id === 'paginas' || id === 'paginaAtual') {
-            formattedValue = value.replace(/\D/g, '')
-        }
-
-        if (id === 'dataInicio' || id === 'dataFim') {
-            formattedValue = value
-                .replace(/\D/g, '')
-                .replace(/(\d{2})(\d)/, '$1/$2')
-                .replace(/(\d{2})\/(\d{2})(\d)/, '$1/$2/$3')
-                .slice(0, 10); 
-        }
-
-        setFormData((prev) => ({...prev, [id]: formattedValue}))
+        const { id, value } = event.target
+        const formattedValue = formatInputValue(id, value)
+        setFormData((prev) => ({ ...prev, [id]: formattedValue }))
     };
 
     const handleSubmit = (event) => {
@@ -123,6 +71,7 @@ const BookshelfForm = ({ optionsSelectStatus, onAdd, editingItem, onUpdate, onCa
 
     return (
         <Form onSubmit={handleSubmit}>
+            {console.log(allInputs)}
             <InfoContainer>
                 {inputInfo.map(item => <FormInput
                     key={item.name}

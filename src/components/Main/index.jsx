@@ -13,7 +13,7 @@ const Main = ({ view }) => {
 
     const [selectedFilter, setSelectedFilter] = useState('Todos')
     const [search, setSearch] = useState('')
-    const [showModal, setShowModal] = useState(false)
+    const [showModal, setShowModal] = useState(true)
 
     const sectionTitle = (view === 'bookcase') ? 'Minha Estante' : 'Minha Lista de Desejos'
 

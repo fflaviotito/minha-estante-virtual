@@ -1,6 +1,6 @@
 import isValidDate from "./isValidDate"
 
-const validateBookshelfForm = ({ titulo, autor, genero, capa, status, paginas, paginaAtual, dataInicio, dataFim}) => {
+const validateBookcaseForm = ({ titulo, autor, genero, capa, status, paginas, paginaAtual, dataInicio, dataFim}) => {
     const errors = {}
 
     if (!titulo || titulo.trim() === '') {
@@ -85,4 +85,4 @@ const validateBookshelfForm = ({ titulo, autor, genero, capa, status, paginas, p
     return errors
 }
 
-export default validateBookshelfForm
+export default validateBookcaseForm
