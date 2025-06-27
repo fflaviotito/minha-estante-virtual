@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react"
-import formatInputValue from "../../utils/formatInputValue" 
 import validateWishlistForm from "../../utils/validateWishlistForm"
+import useFormHandlers from "../../hooks/useFormHandlers"
 
 import { Form, ButtonContainer } from "./styles"
 
@@ -20,37 +19,13 @@ const initialFormData = inputsForm.reduce((acc, item) => {
 
 const WishlistForm = ({ optionsSelectStatus, onCancel, onAdd, onUpdate, editingItem }) => {
 
-    const [formData, setFormData] = useState(initialFormData);
-    const [formErrors, setFormErrors] = useState({})
-
-    useEffect(() => {
-        if (editingItem) setFormData({ ...initialFormData, ...editingItem })
-    }, [editingItem])
-
-    const handleInputChange = (event) => {
-        const {id, value} = event.target
-        const formattedValue = formatInputValue(id, value)
-        setFormData((prev) => ({...prev, [id]: formattedValue}))
-    };
-
-    const handleSubmit = (event) => {
-        event.preventDefault()
-        const errors = validateWishlistForm(formData)
-                
-        if (Object.keys(errors).length > 0) return setFormErrors(errors)
-
-        if (editingItem) {
-            const updatedWishlist = { ...formData, id: editingItem.id}
-            localStorage.setItem('wishlist', JSON.stringify(updatedWishlist))
-            onUpdate(updatedWishlist)
-        } else {
-            const newItem = { id: Date.now(), ...formData }
-            onAdd(newItem)
-        }   
-
-        setFormData(initialFormData)
-        setFormErrors({})
-    }
+    const {
+        formData,
+        formErrors,
+        handleInputChange,
+        handleSubmit,
+        handleCancel
+    } = useFormHandlers(initialFormData, validateWishlistForm, onAdd, onUpdate, onCancel, editingItem)
 
     return (
         <Form onSubmit={handleSubmit}>
@@ -76,7 +51,7 @@ const WishlistForm = ({ optionsSelectStatus, onCancel, onAdd, onUpdate, editingI
             />
             <ButtonContainer>
                 <Button>Salvar</Button>
-                <Button onClick={onCancel}>Cancelar</Button>
+                <Button onClick={handleCancel}>Cancelar</Button>
             </ButtonContainer>
         </Form>
     )

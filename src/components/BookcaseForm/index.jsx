@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react"
-import formatInputValue from "../../utils/formatInputValue"
-import validateBookshelfForm from "../../utils/validateBookcaseForm"
+import validateBookcaseForm from "../../utils/validateBookcaseForm"
+import useFormHandlers from "../../hooks/useFormHandlers"
 
 import { Form, InfoContainer, StatusContainer, ProgressContainer, TimeContainer, ButtonContainer } from "./styles"
 
@@ -33,45 +32,16 @@ const initialFormData = allInputs.reduce((acc, item) => {
 
 const BookshelfForm = ({ optionsSelectStatus, onAdd, editingItem, onUpdate, onCancel }) => {
 
-    const [formData, setFormData] = useState(initialFormData);
-    const [formErrors, setFormErrors] = useState({})
-
-    useEffect(() => {
-        if (editingItem) setFormData({ ...initialFormData, ...editingItem })
-    }, [editingItem])
-
-    const handleInputChange = (event) => {
-        const { id, value } = event.target
-        const formattedValue = formatInputValue(id, value)
-        setFormData((prev) => ({ ...prev, [id]: formattedValue }))
-    };
-
-    const handleSubmit = (event) => {
-        event.preventDefault()
-        const errors = validateBookshelfForm(formData)
-        
-        if (Object.keys(errors).length > 0) return setFormErrors(errors)
-        
-        if (editingItem) {
-            const updateBook = { ...formData, id: editingItem.id}
-            onUpdate(updateBook)
-        } else {
-            const newBook = { id: Date.now(), ...formData }
-            onAdd(newBook)
-        }
-
-        setFormData(initialFormData)
-        setFormErrors({})
-    };
-
-    const handleCancel = (event) => {
-        event.preventDefault()
-        onCancel()
-    }
+    const {
+        formData,
+        formErrors,
+        handleInputChange,
+        handleSubmit,
+        handleCancel
+    } = useFormHandlers(initialFormData, validateBookcaseForm, onAdd, onUpdate, onCancel, editingItem)
 
     return (
         <Form onSubmit={handleSubmit}>
-            {console.log(allInputs)}
             <InfoContainer>
                 {inputInfo.map(item => <FormInput
                     key={item.name}
