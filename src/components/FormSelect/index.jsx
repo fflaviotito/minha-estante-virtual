@@ -1,24 +1,4 @@
-import styled from "styled-components"
-
-const FormSelectContainer = styled.div`
-    
-`
-
-const Label = styled.label`
-    display: block;
-`
-
-const Select = styled.select`
-    width: 100%;
-    padding: 8px;
-    border: 1px solid ${({ $error }) => ($error ? 'red' : '#CCC')};
-`
-
-const ErrorMessage = styled.p`
-    font-size: .8rem;
-    color: red;
-    padding: 2px 0 0 2px;
-`
+import { FormSelectContainer, Label, Select, ErrorMessage } from "./styles"
 
 const FormSelect = ({name, label, value, options, onChange, required, error}) => {
     return (
