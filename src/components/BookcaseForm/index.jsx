@@ -93,8 +93,8 @@ const BookshelfForm = ({ optionsSelectStatus, onAdd, editingItem, onUpdate, onCa
                 />)}
             </TimeContainer>
             <ButtonContainer>
-                <Button>Salvar</Button>
-                <Button onClick={handleCancel}>Cancelar</Button>
+                <Button variant={'form'}>Salvar</Button>
+                <Button onClick={handleCancel} variant={'form'}>Cancelar</Button>
             </ButtonContainer>
         </Form>
     )
