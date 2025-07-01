@@ -7,7 +7,7 @@ import { PageContainer } from "./styles/app"
 
 import Header from "./components/Header"
 import Main from "./components/Main"
-import Footer from "./components/Footer.jsx"
+import Footer from "./components/Footer/index.jsx"
 
 function App() {
 
