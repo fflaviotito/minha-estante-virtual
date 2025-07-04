@@ -11,7 +11,7 @@ const inputInfo = [
     {name: 'titulo', label: 'Título', typeInput: 'text', placeholder: 'Informe o título do livro...', required: true},
     {name: 'autor', label: 'Autor', typeInput: 'text', placeholder: 'Informe o autor do livro...', required: true},
     {name: 'genero', label: 'Gênero', typeInput: 'text', placeholder: 'Informe o gênero do livro...', required: true},
-    {name: 'capa', label: 'Capa', typeInput: 'text', placeholder: 'https://exemplo.com/imagem-da-capa.jpg', required: false}
+    {name: 'capa', label: 'Capa', typeInput: 'url', placeholder: 'https://exemplo.com/imagem-da-capa.jpg', required: false}
 ]
 
 const inputProgress = [

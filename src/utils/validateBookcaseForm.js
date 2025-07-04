@@ -30,8 +30,8 @@ const validateBookcaseForm = ({ titulo, autor, genero, capa, status, paginas, pa
     }
     
     if (capa) {
-        const urlPattern = /^https?:\/\/.*\.(jpg|jpeg|png|gif|webp)$/i
-        if (!urlPattern.test(capa)) errors.capa = 'Insira uma URL válida de imagem (jpg, png, etc).'
+        const urlPattern = /^(https?:\/\/)[^\s]+$/i
+        if (!urlPattern.test(capa)) errors.capa = 'Insira uma URL válida.'
     }
 
     if(!status || status === '') {
